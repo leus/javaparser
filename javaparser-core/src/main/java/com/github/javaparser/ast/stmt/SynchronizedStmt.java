@@ -39,7 +39,7 @@ import java.util.function.Consumer;
 
 /**
  * Usage of the synchronized keyword.
- * <br/>In <code>synchronized (a123) { ... }</code> the expression is a123 and { ... } is the body 
+ * <br/>In <code>synchronized (a123) { ... }</code> the expression is a123 and { ... } is the body
  *
  * @author Julio Vilmar Gesser
  */
@@ -58,7 +58,9 @@ public final class SynchronizedStmt extends Statement implements NodeWithBlockSt
         this(null, expression, body);
     }
 
-    /**This constructor is used by the parser and is considered private.*/
+    /**
+     * This constructor is used by the parser and is considered private.
+     */
     @Generated("com.github.javaparser.generator.core.node.MainConstructorGenerator")
     public SynchronizedStmt(TokenRange tokenRange, Expression expression, BlockStmt body) {
         super(tokenRange);
@@ -68,11 +70,13 @@ public final class SynchronizedStmt extends Statement implements NodeWithBlockSt
     }
 
     @Override
+    @Generated("com.github.javaparser.generator.core.node.AcceptGenerator")
     public <R, A> R accept(final GenericVisitor<R, A> v, final A arg) {
         return v.visit(this, arg);
     }
 
     @Override
+    @Generated("com.github.javaparser.generator.core.node.AcceptGenerator")
     public <A> void accept(final VoidVisitor<A> v, final A arg) {
         v.visit(this, arg);
     }

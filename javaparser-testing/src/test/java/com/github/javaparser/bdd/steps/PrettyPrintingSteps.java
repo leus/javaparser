@@ -21,11 +21,11 @@
 
 package com.github.javaparser.bdd.steps;
 
-import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseException;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.visitor.ModifierVisitor;
+import com.github.javaparser.printer.PrettyPrinterConfiguration;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
@@ -111,5 +111,4 @@ public class PrettyPrintingSteps {
     public void isPrintedAs(String src) {
         assertEquals(src.trim(), resultNode.toString().trim());
     }
-
 }

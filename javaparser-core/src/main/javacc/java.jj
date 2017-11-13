@@ -20,30 +20,35 @@
  */
 
 options {
-  LOOKAHEAD=1;
   STATIC=false;
-  JAVA_UNICODE_ESCAPE=true;
   COMMON_TOKEN_ACTION=true;
   JDK_VERSION = "1.8";
-  TOKEN_FACTORY = "GeneratedJavaParser.CustomToken";
+  TOKEN_EXTENDS ="TokenBase";
   JAVA_TEMPLATE_TYPE = "modern";
 }
 
 PARSER_BEGIN(GeneratedJavaParser)
 /*
+ * Copyright (C) 2007-2010 Júlio Vilmar Gesser.
+ * Copyright (C) 2011, 2013-2016 The JavaParser Team.
  *
  * This file is part of JavaParser.
  *
- * JavaParser is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * JavaParser can be used either under the terms of
+ * a) the GNU Lesser General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ * b) the terms of the Apache License
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with JavaParser 9.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of both licenses in LICENCE.LGPL and
+ * LICENCE.APACHE. Please refer to those files for details.
+ *
+ * JavaParser is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  */
 package com.github.javaparser;
-
 import java.io.*;
 import java.util.*;
 import com.github.javaparser.ast.*;
@@ -54,192 +59,33 @@ import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.stmt.*;
 import com.github.javaparser.ast.type.*;
 import com.github.javaparser.utils.*;
-
 import javax.annotation.Generated;
-
 import static com.github.javaparser.JavaToken.INVALID;
 import static com.github.javaparser.ast.Node.Parsedness.UNPARSABLE;
 import static com.github.javaparser.utils.Utils.*;
 import static com.github.javaparser.ast.NodeList.*;
 import static com.github.javaparser.GeneratedJavaParser.*;
-import static com.github.javaparser.GeneratedJavaParserSupport.*;
 import static com.github.javaparser.Range.*;
 import static com.github.javaparser.Position.*;
 import static com.github.javaparser.ast.type.ArrayType.*;
+import static com.github.javaparser.GeneratedJavaParserTokenManagerBase.*;
 
 @Generated("JavaCC")
-final class GeneratedJavaParser {
-    /* The problems encountered while parsing */
-    List<Problem> problems = new ArrayList<Problem>();
-    boolean storeTokens;
-
-    /* Resets the parser for reuse, gaining a little performance */
-    void reset(Provider provider) {
-        ReInit(provider);
-        problems = new ArrayList<Problem>();
-        token_source.reset();
-    }
-
-    /* Called from within a catch block to skip forward to a known token,
-        and report the occurred exception as a problem. */
-    TokenRange recover(int recoveryTokenType, ParseException p) {
-        JavaToken begin = null;
-        if (p.currentToken != null) {
-            if (p.currentToken instanceof GeneratedJavaParser.CustomToken) {
-                begin = token();
-            }
-        }
-        Token t;
-        boolean done = false;
-        do {
-            t = getNextToken();
-        } while(t.kind != recoveryTokenType && t.kind!=EOF);
-
-        JavaToken end = token();
-
-        TokenRange tokenRange=null;
-        if(begin!=null && end!=null){
-            tokenRange=range(begin, end);
-        }
-
-        problems.add(new Problem(makeMessageForParseException(p), tokenRange, p));
-        return tokenRange;
-    }
-
-    /**
-     * Return the list of JavaParser specific tokens that have been encountered while 
-     * parsing code using this parser.
-     *
-     * @return a list of tokens
-     */
-    public List<JavaToken> getTokens() {
-        return token_source.getTokens();
-    }
-
-    /* The collection of comments encountered */
-    public CommentsCollection getCommentsCollection() {
-        return token_source.getCommentsCollection();
-    }
-
-    /* Reports a problem to the user */
-    void addProblem(String message) {
-        // TODO tokenRange only takes the final token. Need all the tokens.
-        problems.add(new Problem(message, tokenRange(), null));
-    }
-
-    /* Supports a case where >> should be two tokens instead of one,
-        and keeps track of the JavaParser specific token type for this token */
-    static final class CustomToken extends Token {
-        int realKind = GeneratedJavaParserConstants.GT;
-        JavaToken javaToken;
-
-        CustomToken(int kind, String image) {
-            this.kind = kind;
-            this.image = image;
-        }
-
-        public static Token newToken(int kind, String image) {
-            return new CustomToken(kind, image);
-        }
-    }
-
+final class GeneratedJavaParser extends GeneratedJavaParserBase {
     /* Returns the JavaParser specific token type of the last matched token */
-    private JavaToken token() {
-        return ((CustomToken)token).javaToken;
-    }
-
-    /* Returns a tokenRange that spans the last matched token */
-    private TokenRange tokenRange() {
-        if(storeTokens) {
-            return new TokenRange(token(), token());
-        } 
-        return null;
-    }
-
-    /**
-     * Return a TokenRange spanning from begin to end
-     */
-    private TokenRange range(JavaToken begin, JavaToken end) {
-        if(storeTokens) {
-            return new TokenRange(begin, end);
-        } 
-        return null;
-    }
-
-    /**
-     * Return a TokenRange spanning from begin to end
-     */
-    private TokenRange range(Node begin, JavaToken end) {
-        if(storeTokens) {
-            return new TokenRange(begin.getTokenRange().get().getBegin(), end);
-        }
-        return null;
-    }
-
-    /**
-     * Return a TokenRange spanning from begin to end
-     */
-    private TokenRange range(JavaToken begin, Node end) {
-        if(storeTokens) {
-            return new TokenRange(begin, end.getTokenRange().get().getEnd());
-        }
-        return null;
-    }
-
-    /**
-     * Return a TokenRange spanning from begin to end
-     */
-    private TokenRange range(Node begin, Node end) {
-        if(storeTokens) {
-            return new TokenRange(begin.getTokenRange().get().getBegin(), end.getTokenRange().get().getEnd());
-        } 
-        return null;
-    }
-
-    private JavaToken orIfInvalid(JavaToken firstChoice, JavaToken secondChoice) {
-        if(storeTokens) {
-            assertNotNull(firstChoice);
-            assertNotNull(secondChoice);
-            if (firstChoice.valid() || secondChoice.invalid()) {
-                return firstChoice;
-            }
-            return secondChoice;
-        }
-        return null;
-    }
-
-    private JavaToken orIfInvalid(JavaToken firstChoice, Node secondChoice) {
-        if(storeTokens) {
-            return orIfInvalid(firstChoice, secondChoice.getTokenRange().get().getBegin());
-        }
-        return null;
-    }
-
-    /**
-     * Get the token that starts the NodeList l
-     */
-    private JavaToken nodeListBegin(NodeList<?> l) {
-        if (!storeTokens || l.isEmpty()) {
-            return JavaToken.INVALID;
-        }
-        return l.get(0).getTokenRange().get().getBegin();
-    }
-
-    /* Sets the kind of the last matched token to newKind */
-    private void setTokenKind(int newKind) {
-        token().setKind(newKind);
+    JavaToken token() {
+        return token.javaToken;
     }
 
     /* Changes the amount by which the horizontal position is increased when a tab character is encountered.
         One by default.*/
-    public void setTabSize(int size) {
+    void setTabSize(int size) {
         jj_input_stream.setTabSize(size);
     }
 
-    /* Makes the parser keep a list of tokens */
-    public void setStoreTokens(boolean storeTokens) {
-        this.storeTokens=storeTokens; 
-        token_source.setStoreTokens(storeTokens);
+    @Override
+    GeneratedJavaParserTokenManager getTokenSource() {
+        return token_source;
     }
 }
 
@@ -261,7 +107,7 @@ TOKEN_MGR_DECLS :
     private List<JavaToken> tokens = new ArrayList<JavaToken>();
     private CommentsCollection commentsCollection = new CommentsCollection();
     private JavaToken homeToken;
-    private Stack<CustomToken> tokenWorkStack = new Stack<CustomToken>();
+    private Stack<Token> tokenWorkStack = new Stack<Token>();
     private boolean storeTokens;
 
     void reset() {
@@ -291,41 +137,28 @@ TOKEN_MGR_DECLS :
         this.storeTokens = storeTokens;
     }
 
-    private void CommonTokenAction(Token rawToken) {
+    private void CommonTokenAction(Token token) {
         // Use an intermediary stack to avoid recursion, see issue 1003
-        CustomToken token = (CustomToken) rawToken;
         do {
             tokenWorkStack.push(token);
-            token = (CustomToken) token.specialToken;
+            token = token.specialToken;
         } while (token != null);
 
         // The stack is now filled with tokens in left-to-right order. Process them.
         while(!tokenWorkStack.empty()) {
             token = tokenWorkStack.pop();
             token.javaToken = new JavaToken(token, tokens);
+
             if(storeTokens) {
                 tokens.add(token.javaToken);
             }
+
             if (homeToken == null) {
                 homeToken = token.javaToken;
             }
 
-            String commentText = token.image;
-            if (token.kind == JAVADOC_COMMENT) {
-                JavadocComment comment = new JavadocComment(tokenRange(token), commentText.substring(3, commentText.length() - 2));
-                commentsCollection.addComment(comment);
-            } else if (token.kind == MULTI_LINE_COMMENT) {
-                BlockComment comment = new BlockComment(tokenRange(token), commentText.substring(2, commentText.length() - 2));
-                commentsCollection.addComment(comment);
-            } else if (token.kind == SINGLE_LINE_COMMENT) {
-                // line comments have their end of line character(s) included, and we don't want that.
-                Range range = new Range(pos(token.beginLine, token.beginColumn), pos(token.endLine, token.endColumn));
-                while (commentText.endsWith("\r") || commentText.endsWith("\n")) {
-                    commentText = commentText.substring(0, commentText.length() - 1);
-                }
-                range = range.withEnd(pos(range.begin.line, range.begin.column + commentText.length()));
-                LineComment comment = new LineComment(tokenRange(token), commentText.substring(2));
-                comment.setRange(range);
+            if(TokenTypes.isComment(token.kind)) {
+                Comment comment = createCommentFromToken(token);
                 commentsCollection.addComment(comment);
             }
         }
@@ -343,7 +176,7 @@ MORE :
 {
   <ENTER_JAVADOC_COMMENT: "/**" ~["/"]> { input_stream.backup(1); } : IN_JAVADOC_COMMENT
 |
-  <"/*"> : IN_MULTI_LINE_COMMENT
+  <ENTER_MULTILINE_COMMENT: "/*"> : IN_MULTI_LINE_COMMENT
 }
 
 <IN_JAVADOC_COMMENT>
@@ -482,6 +315,13 @@ TOKEN :
 |
   < #HEX_DIGITS: ["0"-"9","a"-"f","A"-"F"]((["0"-"9","a"-"f","A"-"F","_"])*["0"-"9","a"-"f","A"-"F"])? >
 |
+  < #UNICODE_ESCAPE:
+    "\\u"
+    ["0"-"9","A"-"F","a"-"f"]
+    ["0"-"9","A"-"F","a"-"f"]
+    ["0"-"9","A"-"F","a"-"f"]
+    ["0"-"9","A"-"F","a"-"f"] >
+|
   < CHARACTER_LITERAL:
       "'"
       (   (~["'","\\","\n","\r"])
@@ -491,12 +331,7 @@ TOKEN :
             | ["0"-"3"] ["0"-"7"] ["0"-"7"]
             )
           )
-        | ("\\u"
-        	["0"-"9","A"-"F","a"-"f"]
-        	["0"-"9","A"-"F","a"-"f"]
-        	["0"-"9","A"-"F","a"-"f"]
-        	["0"-"9","A"-"F","a"-"f"]
-          )
+        | <UNICODE_ESCAPE>
       )
       "'"
   >
@@ -595,6 +430,7 @@ TOKEN :
          "\ufe76"-"\ufefc",  "\uff04",  "\uff21"-"\uff3a",  "\uff3f",  "\uff41"-"\uff5a",  "\uff66"-"\uffbe",  
          "\uffc2"-"\uffc7",  "\uffca"-"\uffcf",  "\uffd2"-"\uffd7",  "\uffda"-"\uffdc",  "\uffe0"-"\uffe1",  
          "\uffe5"-"\uffe6"  ]
+        | <UNICODE_ESCAPE>
   >
 |
   < #PART_LETTER: [
@@ -678,6 +514,7 @@ TOKEN :
          "\ufe4d"-"\ufe4f",  "\ufe69",  "\ufe70"-"\ufe74",  "\ufe76"-"\ufefc",  "\ufeff",  "\uff04",  "\uff10"-"\uff19",  
          "\uff21"-"\uff3a",  "\uff3f",  "\uff41"-"\uff5a",  "\uff66"-"\uffbe",  "\uffc2"-"\uffc7",  "\uffca"-"\uffcf",  
          "\uffd2"-"\uffd7",  "\uffda"-"\uffdc",  "\uffe0"-"\uffe1",  "\uffe5"-"\uffe6",  "\ufff9"-"\ufffb" ]
+        | <UNICODE_ESCAPE>
   >
 }
 
@@ -746,18 +583,19 @@ TOKEN :
   < RUNSIGNEDSHIFT: ">>>" >
   {
      matchedToken.kind = GT;
-     ((GeneratedJavaParser.CustomToken)matchedToken).realKind = RUNSIGNEDSHIFT;
+     matchedToken.realKind = RUNSIGNEDSHIFT;
      input_stream.backup(2);
   }
 | < RSIGNEDSHIFT: ">>" >
   {
      matchedToken.kind = GT;
-     ((GeneratedJavaParser.CustomToken)matchedToken).realKind = RSIGNEDSHIFT;
+     matchedToken.realKind = RSIGNEDSHIFT;
      input_stream.backup(1);
   }
 | < GT: ">" >
 }
 
+TOKEN: { <CTRL_Z: "\u001A" /** ctrl+z char **/> }
 
 /*****************************************
  * THE JAVA LANGUAGE GRAMMAR STARTS HERE *
@@ -799,7 +637,7 @@ CompilationUnit CompilationUnit():
                 )
             )
         )*
-        (<EOF> | "\u001A" /** ctrl+z char **/)
+        (<EOF> | <CTRL_Z>)
         { return new CompilationUnit(range(token_source.getHomeToken(), token()), pakage, imports, types, module); }
     } catch (ParseException e) {
         recover(EOF, e);
@@ -854,31 +692,31 @@ ModifierHolder Modifiers():
  (
   LOOKAHEAD(2)
   (
-   "public" { addModifier(this, modifiers, Modifier.PUBLIC); begin = orIfInvalid(begin, token()); }
+   "public" { addModifier(modifiers, Modifier.PUBLIC); begin = orIfInvalid(begin, token()); }
   |
-   "static" { addModifier(this, modifiers, Modifier.STATIC); begin = orIfInvalid(begin, token()); }
+   "static" { addModifier(modifiers, Modifier.STATIC); begin = orIfInvalid(begin, token()); }
   |
-   "protected" {  addModifier(this, modifiers, Modifier.PROTECTED); begin = orIfInvalid(begin, token()); }
+   "protected" {  addModifier(modifiers, Modifier.PROTECTED); begin = orIfInvalid(begin, token()); }
   |
-   "private" { addModifier(this, modifiers, Modifier.PRIVATE); begin = orIfInvalid(begin, token()); }
+   "private" { addModifier(modifiers, Modifier.PRIVATE); begin = orIfInvalid(begin, token()); }
   |
-   "final" { addModifier(this, modifiers, Modifier.FINAL); begin = orIfInvalid(begin, token()); }
+   "final" { addModifier(modifiers, Modifier.FINAL); begin = orIfInvalid(begin, token()); }
   |
-   "abstract" { addModifier(this, modifiers, Modifier.ABSTRACT); begin = orIfInvalid(begin, token()); }
+   "abstract" { addModifier(modifiers, Modifier.ABSTRACT); begin = orIfInvalid(begin, token()); }
   |
-   "synchronized" { addModifier(this, modifiers, Modifier.SYNCHRONIZED); begin = orIfInvalid(begin, token()); }
+   "synchronized" { addModifier(modifiers, Modifier.SYNCHRONIZED); begin = orIfInvalid(begin, token()); }
   |
-   "native" { addModifier(this, modifiers, Modifier.NATIVE); begin = orIfInvalid(begin, token()); }
+   "native" { addModifier(modifiers, Modifier.NATIVE); begin = orIfInvalid(begin, token()); }
   |
-   "transient" { addModifier(this, modifiers, Modifier.TRANSIENT); begin = orIfInvalid(begin, token()); }
+   "transient" { addModifier(modifiers, Modifier.TRANSIENT); begin = orIfInvalid(begin, token()); }
   |
-   "volatile" { addModifier(this, modifiers, Modifier.VOLATILE); begin = orIfInvalid(begin, token()); }
+   "volatile" { addModifier(modifiers, Modifier.VOLATILE); begin = orIfInvalid(begin, token()); }
   |
-   "strictfp" { addModifier(this, modifiers, Modifier.STRICTFP);  begin = orIfInvalid(begin, token()); }
+   "strictfp" { addModifier(modifiers, Modifier.STRICTFP);  begin = orIfInvalid(begin, token()); }
   |
-   "transitive" { addModifier(this, modifiers, Modifier.TRANSITIVE);  begin = orIfInvalid(begin, token()); }
+   "transitive" { addModifier(modifiers, Modifier.TRANSITIVE);  begin = orIfInvalid(begin, token()); }
   |
-   "default" { addModifier(this, modifiers, Modifier.DEFAULT);  begin = orIfInvalid(begin, token()); }
+   "default" { addModifier(modifiers, Modifier.DEFAULT);  begin = orIfInvalid(begin, token()); }
   |
    ann = Annotation() { annotations = add(annotations, ann); begin = orIfInvalid(begin, ann); }
   )
@@ -1147,7 +985,7 @@ MethodDeclaration MethodDeclaration(ModifierHolder modifier):
 	RangedList<TypeParameter> typeParameters = new RangedList<TypeParameter>(emptyList());
 	Type type;
 	SimpleName name;
-	NodeList<Parameter> parameters = emptyList();
+	Pair<NodeList<Parameter>, ReceiverParameter> parameters = new Pair<NodeList<Parameter>, ReceiverParameter>(emptyList(), null);
 	ArrayBracketPair arrayBracketPair;
 	List<ArrayBracketPair> arrayBracketPairs = new ArrayList(0);
 	NodeList<ReferenceType> throws_ = emptyList();
@@ -1167,7 +1005,7 @@ MethodDeclaration MethodDeclaration(ModifierHolder modifier):
     ( body = Block() | ";" )
     { 
         type = juggleArrayType(type, arrayBracketPairs);
-        return new MethodDeclaration(range(begin, token()), modifier.modifiers, modifier.annotations, typeParameters.list, type, name, parameters, throws_, body);
+        return new MethodDeclaration(range(begin, token()), modifier.modifiers, modifier.annotations, typeParameters.list, type, name, parameters.a, throws_, body, parameters.b);
     }
 }
 
@@ -1193,14 +1031,24 @@ Type AnnotatedType():
     { return type; }
 }
 
-NodeList<Parameter> Parameters():
+Pair<NodeList<Parameter>, ReceiverParameter> Parameters():
 {
 	NodeList<Parameter> ret = emptyList();
 	Parameter par;
+	ReceiverParameter rp = null;
 }
 {
-  "(" [ par = Parameter() { ret = add(ret, par); } ( "," par = Parameter() { ret = add(ret, par); } )* ] ")"
-  { return ret; }
+    "("
+    [ 
+        ( LOOKAHEAD(ReceiverParameter())
+            rp = ReceiverParameter()
+            |
+            par = Parameter() { ret = add(ret, par); }
+        ) 
+        ( "," par = Parameter() { ret = add(ret, par); } )* 
+    ]
+    ")"
+    { return new Pair(ret, rp); }
 }
 
 NodeList<Parameter> LambdaParameters():
@@ -1232,46 +1080,47 @@ Parameter Parameter():
 	Type partialType;
 	boolean isVarArg = false;
 	Pair<SimpleName, List<ArrayBracketPair>> id;
-	SimpleName receiverId;
 	NodeList<AnnotationExpr> varArgAnnotations = emptyList();
-	Parameter ret;
 }
 {
-  modifier = Modifiers() partialType = Type(emptyList()) [ varArgAnnotations = Annotations() "..." { isVarArg = true;} ] 
-  ( LOOKAHEAD(ReceiverParameterId())
-    receiverId = ReceiverParameterId()
-    {
-        JavaToken begin = orIfInvalid(modifier.begin, partialType);
-        ret = new Parameter(range(begin, token()), modifier.modifiers, modifier.annotations, partialType, isVarArg, varArgAnnotations, receiverId);
-    }
-  |
+    modifier = Modifiers() partialType = Type(emptyList()) [ varArgAnnotations = Annotations() "..." { isVarArg = true;} ] 
     id = VariableDeclaratorId()
     {
         JavaToken begin = orIfInvalid(modifier.begin, partialType);
-        ret = new Parameter(range(begin, token()), modifier.modifiers, modifier.annotations, juggleArrayType(partialType, id.b), isVarArg, varArgAnnotations, id.a);
+        return new Parameter(range(begin, token()), modifier.modifiers, modifier.annotations, juggleArrayType(partialType, id.b), isVarArg, varArgAnnotations, id.a);
     }
-  )
-  { return ret; }
 }
 
-SimpleName ReceiverParameterId():
+ReceiverParameter ReceiverParameter():
 {
-    String id;
-	String ret ="";
-    JavaToken begin = INVALID;
+	Type partialType;
+	Name id;
+	NodeList<AnnotationExpr> annotations = emptyList();
 }
 {
-  ( id = Identifier() "." { ret = ret + id + "."; begin = orIfInvalid(begin, token()); } )*
-  "this" { begin = orIfInvalid(begin, token()); }
-  { return new SimpleName(range(begin, token()), ret + "this"); }
+    annotations = Annotations()
+    partialType = Type(emptyList()) 
+    id = ReceiverParameterId()
+    {
+        return new ReceiverParameter(range(partialType, token()), annotations, partialType, id);
+    }
 }
 
+Name ReceiverParameterId():
+{
+	Name ret = null;
+	NodeList<AnnotationExpr> annotations;
+}
+{
+    [ LOOKAHEAD(Name()) ret = Name() "."] annotations=Annotations() "this" 
+    { return new Name(tokenRange(), ret, token.image, annotations); }
+}
 
 ConstructorDeclaration ConstructorDeclaration(ModifierHolder modifier):
 {
 	RangedList<TypeParameter> typeParameters = new RangedList<TypeParameter>(emptyList());
 	SimpleName name;
-	NodeList<Parameter> parameters = emptyList();
+	Pair<NodeList<Parameter>, ReceiverParameter> parameters = new Pair<NodeList<Parameter>, ReceiverParameter>(emptyList(), null);
 	NodeList<ReferenceType> throws_ = emptyList();
 	ExplicitConstructorInvocationStmt exConsInv = null;
 	NodeList<Statement> stmts = emptyList();
@@ -1293,7 +1142,7 @@ ConstructorDeclaration ConstructorDeclaration(ModifierHolder modifier):
   	if (exConsInv != null) {
   		stmts = prepend(stmts, exConsInv);
   	}
-  	return new ConstructorDeclaration(range(begin, token()), modifier.modifiers, modifier.annotations, typeParameters.list, name, parameters, throws_, new BlockStmt(range(blockBegin, token()), stmts));
+  	return new ConstructorDeclaration(range(begin, token()), modifier.modifiers, modifier.annotations, typeParameters.list, name, parameters.a, throws_, new BlockStmt(range(blockBegin, token()), stmts), parameters.b);
   }
 }
 
@@ -1593,14 +1442,14 @@ Expression Expression():
             "->" lambdaBody = LambdaBody()
             {
                 if (ret instanceof CastExpr) {
-                    ret = generateLambda(this, ret, lambdaBody);
+                    ret = generateLambda(ret, lambdaBody);
                 } else if (ret instanceof ConditionalExpr) {
                     ConditionalExpr ce = (ConditionalExpr) ret;
                     if(ce.getElseExpr() != null) {
-                        ce.setElseExpr(generateLambda(this, ce.getElseExpr(), lambdaBody));
+                        ce.setElseExpr(generateLambda(ce.getElseExpr(), lambdaBody));
                     }
                 } else {
-                    ret = generateLambda(this, ret, lambdaBody);
+                    ret = generateLambda(ret, lambdaBody);
                 }
             }
         |
@@ -2647,7 +2496,7 @@ void RUNSIGNEDSHIFT():
 {}
 {
   ( LOOKAHEAD({ getToken(1).kind == GT &&
-                ((CustomToken)getToken(1)).realKind == RUNSIGNEDSHIFT} )
+                getToken(1).realKind == RUNSIGNEDSHIFT} )
    ">" ">" ">"
   )
 }
@@ -2656,7 +2505,7 @@ void RSIGNEDSHIFT():
 {}
 {
   ( LOOKAHEAD({ getToken(1).kind == GT &&
-                ((CustomToken)getToken(1)).realKind == RSIGNEDSHIFT} )
+                getToken(1).realKind == RSIGNEDSHIFT} )
   ">" ">"
   )
 }
@@ -2920,28 +2769,26 @@ Type ResultTypeParseStart():
 { NodeList<AnnotationExpr> annotations; Type ret; }
 { annotations = Annotations() ret = ResultType(annotations) <EOF> { return ret; } }
 
-
 VariableDeclarationExpr VariableDeclarationExpressionParseStart():
 { VariableDeclarationExpr ret; }
 { ret = VariableDeclarationExpression() <EOF> { return ret; } }
-
 
 ExplicitConstructorInvocationStmt ExplicitConstructorInvocationParseStart():
 { ExplicitConstructorInvocationStmt ret; }
 { ret = ExplicitConstructorInvocation() <EOF> { return ret; } }
 
-
 Name NameParseStart():
 { Name ret; }
 { ret = Name() <EOF> { return ret; } }
 
+SimpleName SimpleNameParseStart():
+{ SimpleName ret; }
+{ ret = SimpleName() <EOF> { return ret; } }
 
 Parameter ParameterParseStart():
 { Parameter ret; }
 { ret = Parameter() <EOF> { return ret; } }
 
-
 PackageDeclaration PackageDeclarationParseStart():
 { PackageDeclaration ret; }
 { ret = PackageDeclaration() <EOF> { return ret; } }
-

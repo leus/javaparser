@@ -52,7 +52,9 @@ public final class VoidType extends Type implements NodeWithAnnotations<VoidType
         this(null);
     }
 
-    /**This constructor is used by the parser and is considered private.*/
+    /**
+     * This constructor is used by the parser and is considered private.
+     */
     @Generated("com.github.javaparser.generator.core.node.MainConstructorGenerator")
     public VoidType(TokenRange tokenRange) {
         super(tokenRange);
@@ -60,11 +62,13 @@ public final class VoidType extends Type implements NodeWithAnnotations<VoidType
     }
 
     @Override
+    @Generated("com.github.javaparser.generator.core.node.AcceptGenerator")
     public <R, A> R accept(final GenericVisitor<R, A> v, final A arg) {
         return v.visit(this, arg);
     }
 
     @Override
+    @Generated("com.github.javaparser.generator.core.node.AcceptGenerator")
     public <A> void accept(final VoidVisitor<A> v, final A arg) {
         v.visit(this, arg);
     }
@@ -126,6 +130,6 @@ public final class VoidType extends Type implements NodeWithAnnotations<VoidType
 
     @Override
     public ResolvedVoidType resolve() {
-        return getSymbolResolver().resolve(this, ResolvedVoidType.class);
+        return getSymbolResolver().toResolvedType(this, ResolvedVoidType.class);
     }
 }

@@ -1,3 +1,30 @@
+Version 3.5.3
+------------------
+[issues resolved](https://github.com/javaparser/javaparser/milestone/66?closed=1)
+* Unicode escapes (`\u1234`) are now retained in the AST,
+    but they are now only allowed in comments, string and character literals, and identifiers. 
+* BETA: the below work on Java Symbol Solver is still ongoing.
+
+Version 3.5.2
+------------------
+[issues resolved](https://github.com/javaparser/javaparser/milestone/65?closed=1)
+* The pretty printer now cleans up Javadoc comments.
+* BETA: the below work on Java Symbol Solver is still ongoing.
+
+Version 3.5.1
+------------------
+[issues resolved](https://github.com/javaparser/javaparser/milestone/64?closed=1)
+* BETA: the below work on Java Symbol Solver is still ongoing.
+
+Version 3.5.0
+------------------
+[issues resolved](https://github.com/javaparser/javaparser/milestone/63?closed=1)
+* A functional visitor API has been added. See [PR 1195](https://github.com/javaparser/javaparser/pull/1195) for now.
+* Build is working again on Windows thanks to Leonardo Herrera.
+* The pretty printer now has an option to order imports, also thanks to Leonardo Herrera.
+* Receiver parameters are now well-supported instead of being a hack. See [issue 1194](https://github.com/javaparser/javaparser/pull/1194) for a description.
+* BETA: the below work on Java Symbol Solver is still ongoing.
+
 Version 3.4.4
 ------------------
 [issues resolved](https://github.com/javaparser/javaparser/milestone/62?closed=1)

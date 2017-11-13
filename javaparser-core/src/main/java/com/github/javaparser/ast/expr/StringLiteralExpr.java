@@ -37,6 +37,7 @@ import java.util.function.Consumer;
  * A literal string.
  * <br/><code>"Hello World!"</code>
  * <br/><code>"\"\n"</code>
+ * <br/><code>"\u2122"</code>
  * <br/><code>"™"</code>
  * <br/><code>"💩"</code>
  *
@@ -68,7 +69,9 @@ public final class StringLiteralExpr extends LiteralStringValueExpr {
         return new StringLiteralExpr(Utils.escapeEndOfLines(string));
     }
 
-    /**This constructor is used by the parser and is considered private.*/
+    /**
+     * This constructor is used by the parser and is considered private.
+     */
     @Generated("com.github.javaparser.generator.core.node.MainConstructorGenerator")
     public StringLiteralExpr(TokenRange tokenRange, String value) {
         super(tokenRange, value);
@@ -76,11 +79,13 @@ public final class StringLiteralExpr extends LiteralStringValueExpr {
     }
 
     @Override
+    @Generated("com.github.javaparser.generator.core.node.AcceptGenerator")
     public <R, A> R accept(final GenericVisitor<R, A> v, final A arg) {
         return v.visit(this, arg);
     }
 
     @Override
+    @Generated("com.github.javaparser.generator.core.node.AcceptGenerator")
     public <A> void accept(final VoidVisitor<A> v, final A arg) {
         v.visit(this, arg);
     }

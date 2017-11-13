@@ -42,8 +42,8 @@ import java.util.function.Consumer;
 
 /**
  * A classic for statement.
- * <br/>In <code>for(int a=3,b==5; a<99; a++) { ... }</code> the intialization is int a=3,b=5, 
- * compare is b==5, update is a++, and the statement or block statement following it is in body.  
+ * <br/>In <code>for(int a=3,b==5; a<99; a++) { ... }</code> the intialization is int a=3,b=5,
+ * compare is b==5, update is a++, and the statement or block statement following it is in body.
  *
  * @author Julio Vilmar Gesser
  */
@@ -66,7 +66,9 @@ public final class ForStmt extends Statement implements NodeWithBody<ForStmt> {
         this(null, initialization, compare, update, body);
     }
 
-    /**This constructor is used by the parser and is considered private.*/
+    /**
+     * This constructor is used by the parser and is considered private.
+     */
     @Generated("com.github.javaparser.generator.core.node.MainConstructorGenerator")
     public ForStmt(TokenRange tokenRange, NodeList<Expression> initialization, Expression compare, NodeList<Expression> update, Statement body) {
         super(tokenRange);
@@ -78,11 +80,13 @@ public final class ForStmt extends Statement implements NodeWithBody<ForStmt> {
     }
 
     @Override
+    @Generated("com.github.javaparser.generator.core.node.AcceptGenerator")
     public <R, A> R accept(final GenericVisitor<R, A> v, final A arg) {
         return v.visit(this, arg);
     }
 
     @Override
+    @Generated("com.github.javaparser.generator.core.node.AcceptGenerator")
     public <A> void accept(final VoidVisitor<A> v, final A arg) {
         v.visit(this, arg);
     }

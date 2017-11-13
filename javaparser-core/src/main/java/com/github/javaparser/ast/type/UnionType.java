@@ -50,13 +50,13 @@ import java.util.function.Consumer;
  * <h2>Java 7+</h2>
  * As of Java 7 it is used in catch clauses.
  * <pre><code>
- *  try { 
- *      ... 
- *  } catch(<b>IOException | NullPointerException ex</b>) {
- *      ... 
- *  }
+ * try {
+ * ...
+ * } catch(<b>IOException | NullPointerException ex</b>) {
+ * ...
+ * }
  * </pre>
- * 
+ *
  * The types that make up the union type are its "elements"
  */
 public final class UnionType extends Type implements NodeWithAnnotations<UnionType> {
@@ -68,7 +68,9 @@ public final class UnionType extends Type implements NodeWithAnnotations<UnionTy
         this(null, new NodeList<>());
     }
 
-    /**This constructor is used by the parser and is considered private.*/
+    /**
+     * This constructor is used by the parser and is considered private.
+     */
     @Generated("com.github.javaparser.generator.core.node.MainConstructorGenerator")
     public UnionType(TokenRange tokenRange, NodeList<ReferenceType> elements) {
         super(tokenRange);
@@ -106,12 +108,14 @@ public final class UnionType extends Type implements NodeWithAnnotations<UnionTy
     }
 
     @Override
-    public <R, A> R accept(GenericVisitor<R, A> v, A arg) {
+    @Generated("com.github.javaparser.generator.core.node.AcceptGenerator")
+    public <R, A> R accept(final GenericVisitor<R, A> v, final A arg) {
         return v.visit(this, arg);
     }
 
     @Override
-    public <A> void accept(VoidVisitor<A> v, A arg) {
+    @Generated("com.github.javaparser.generator.core.node.AcceptGenerator")
+    public <A> void accept(final VoidVisitor<A> v, final A arg) {
         v.visit(this, arg);
     }
 
@@ -179,6 +183,6 @@ public final class UnionType extends Type implements NodeWithAnnotations<UnionTy
 
     @Override
     public ResolvedUnionType resolve() {
-        return getSymbolResolver().resolve(this, ResolvedUnionType.class);
+        return getSymbolResolver().toResolvedType(this, ResolvedUnionType.class);
     }
 }

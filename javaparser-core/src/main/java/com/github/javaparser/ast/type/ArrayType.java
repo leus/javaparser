@@ -50,7 +50,7 @@ public final class ArrayType extends ReferenceType implements NodeWithAnnotation
 
     @Override
     public ResolvedArrayType resolve() {
-        return getSymbolResolver().resolve(this, ResolvedArrayType.class);
+        return getSymbolResolver().toResolvedType(this, ResolvedArrayType.class);
     }
 
     /**
@@ -58,8 +58,12 @@ public final class ArrayType extends ReferenceType implements NodeWithAnnotation
      */
     public enum Origin {
 
-        /** The [] were found on the name, like "int a[]" or "String abc()[][]" */
-        NAME, /** The [] were found on the type, like "int[] a" or "String[][] abc()" */
+        /**
+         * The [] were found on the name, like "int a[]" or "String abc()[][]"
+         */
+        NAME, /**
+         * The [] were found on the type, like "int[] a" or "String[][] abc()"
+         */
         TYPE
     }
 
@@ -76,7 +80,9 @@ public final class ArrayType extends ReferenceType implements NodeWithAnnotation
         this(type, Origin.TYPE, nodeList(annotations));
     }
 
-    /**This constructor is used by the parser and is considered private.*/
+    /**
+     * This constructor is used by the parser and is considered private.
+     */
     @Generated("com.github.javaparser.generator.core.node.MainConstructorGenerator")
     public ArrayType(TokenRange tokenRange, Type componentType, Origin origin, NodeList<AnnotationExpr> annotations) {
         super(tokenRange, annotations);
@@ -86,11 +92,13 @@ public final class ArrayType extends ReferenceType implements NodeWithAnnotation
     }
 
     @Override
+    @Generated("com.github.javaparser.generator.core.node.AcceptGenerator")
     public <R, A> R accept(final GenericVisitor<R, A> v, final A arg) {
         return v.visit(this, arg);
     }
 
     @Override
+    @Generated("com.github.javaparser.generator.core.node.AcceptGenerator")
     public <A> void accept(final VoidVisitor<A> v, final A arg) {
         v.visit(this, arg);
     }

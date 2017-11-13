@@ -36,12 +36,11 @@ import com.github.javaparser.metamodel.JavaParserMetaModel;
 import com.github.javaparser.metamodel.TypeDeclarationMetaModel;
 import javax.annotation.Generated;
 import java.util.EnumSet;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 import static com.github.javaparser.utils.Utils.assertNotNull;
 import static java.util.stream.Collectors.toList;
 import com.github.javaparser.ast.Node;
-import java.util.function.Consumer;
 
 /**
  * A base class for all types of type declarations.
@@ -69,7 +68,9 @@ public abstract class TypeDeclaration<T extends TypeDeclaration<?>> extends Body
         this(null, modifiers, annotations, name, members);
     }
 
-    /**This constructor is used by the parser and is considered private.*/
+    /**
+     * This constructor is used by the parser and is considered private.
+     */
     @Generated("com.github.javaparser.generator.core.node.MainConstructorGenerator")
     public TypeDeclaration(TokenRange tokenRange, EnumSet<Modifier> modifiers, NodeList<AnnotationExpr> annotations, SimpleName name, NodeList<BodyDeclaration<?>> members) {
         super(tokenRange, annotations);
@@ -106,8 +107,8 @@ public abstract class TypeDeclaration<T extends TypeDeclaration<?>> extends Body
         return modifiers;
     }
 
-    @SuppressWarnings("unchecked")
     @Generated("com.github.javaparser.generator.core.node.PropertyGenerator")
+    @SuppressWarnings("unchecked")
     public T setMembers(final NodeList<BodyDeclaration<?>> members) {
         assertNotNull(members);
         if (members == this.members) {
@@ -121,8 +122,8 @@ public abstract class TypeDeclaration<T extends TypeDeclaration<?>> extends Body
         return (T) this;
     }
 
-    @SuppressWarnings("unchecked")
     @Generated("com.github.javaparser.generator.core.node.PropertyGenerator")
+    @SuppressWarnings("unchecked")
     public T setModifiers(final EnumSet<Modifier> modifiers) {
         assertNotNull(modifiers);
         if (modifiers == this.modifiers) {
@@ -133,8 +134,8 @@ public abstract class TypeDeclaration<T extends TypeDeclaration<?>> extends Body
         return (T) this;
     }
 
-    @SuppressWarnings("unchecked")
     @Generated("com.github.javaparser.generator.core.node.PropertyGenerator")
+    @SuppressWarnings("unchecked")
     public T setName(final SimpleName name) {
         assertNotNull(name);
         if (name == this.name) {

@@ -48,8 +48,8 @@ import java.util.function.Consumer;
  * it can be "new".
  * <br/>In <code>System.out::println;</code> the scope is System.out and the identifier is "println"
  * <br/><code>(test ? stream.map(String::trim) : stream)::toArray;</code>
- * <br/>In <code>Bar&lt;String>::&lt;Integer>new</code> the String type argument is on the scope, 
- * and the Integer type argument is on this MethodReferenceExpr. 
+ * <br/>In <code>Bar&lt;String>::&lt;Integer>new</code> the String type argument is on the scope,
+ * and the Integer type argument is on this MethodReferenceExpr.
  *
  * @author Raquel Pau
  */
@@ -71,7 +71,9 @@ public final class MethodReferenceExpr extends Expression implements NodeWithTyp
         this(null, scope, typeArguments, identifier);
     }
 
-    /**This constructor is used by the parser and is considered private.*/
+    /**
+     * This constructor is used by the parser and is considered private.
+     */
     @Generated("com.github.javaparser.generator.core.node.MainConstructorGenerator")
     public MethodReferenceExpr(TokenRange tokenRange, Expression scope, NodeList<Type> typeArguments, String identifier) {
         super(tokenRange);
@@ -82,12 +84,14 @@ public final class MethodReferenceExpr extends Expression implements NodeWithTyp
     }
 
     @Override
-    public <R, A> R accept(GenericVisitor<R, A> v, A arg) {
+    @Generated("com.github.javaparser.generator.core.node.AcceptGenerator")
+    public <R, A> R accept(final GenericVisitor<R, A> v, final A arg) {
         return v.visit(this, arg);
     }
 
     @Override
-    public <A> void accept(VoidVisitor<A> v, A arg) {
+    @Generated("com.github.javaparser.generator.core.node.AcceptGenerator")
+    public <A> void accept(final VoidVisitor<A> v, final A arg) {
         v.visit(this, arg);
     }
 

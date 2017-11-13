@@ -220,4 +220,9 @@ public class Utils {
     public static <T> Set<T> set(T... items) {
         return new HashSet<>(asList(items));
     }
+
+    public static String normalizeEolInTextBlock(String content, String endOfLineCharacter) {
+        return content
+                .replaceAll("\\R", endOfLineCharacter);
+    }
 }
